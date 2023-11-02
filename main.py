@@ -11,18 +11,25 @@ def input_error(func):
             return "Not enough params. Try again"
         except KeyError:
             return "Unknown name. Try again"
+        except ValueError:
+            return "Wrong phone number. Try again"
     return inner
 
 def greeting(*args):
     return "How can I help you?"
+    
 
 @input_error
 def add_record(name: str, phone:str):
+    if not phone.isdecimal():
+        raise ValueError
     phone_book[name] = phone
     return f"Phone added {name=} {phone=}"
 
 @input_error
-def change_record(name:str, new_phone):
+def change_record(name:str, new_phone: str):
+    if not new_phone.isdecimal():
+        raise ValueError
     rec = phone_book[name]
     if rec:
         phone_book[name] = new_phone
